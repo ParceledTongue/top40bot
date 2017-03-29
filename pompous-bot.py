@@ -19,9 +19,9 @@ tweet = base_tweet
 while to_capitalize < len(tweet):
   to_capitalize += 1
   tweet = tweet = base_tweet
-  tweet = tweet[:to_capitalize].capitalize() + tweet[n:]
+  tweet = tweet[:to_capitalize].capitalize() + tweet[to_capitalize:]
   while len(tweet) <= 140:
     api.update_status(status=tweet)
     tweet += "!"
-    time.sleep(300)
+    time.sleep(600)
 
