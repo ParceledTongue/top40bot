@@ -13,10 +13,12 @@ auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
 
 to_capitalize = 0
+base_tweet = "some say that i'm a pompous creep"
+tweet = base_tweet
 
 while to_capitalize < len(tweet):
   to_capitalize += 1
-  tweet = "some say that i'm a pompous creep"
+  tweet = tweet = base_tweet
   tweet = tweet[:to_capitalize].capitalize() + tweet[n:]
   while len(tweet) <= 140:
     api.update_status(status=tweet)
