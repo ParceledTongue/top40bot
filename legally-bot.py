@@ -18,7 +18,7 @@ with open("lyrics.txt") as f:
 model = markovify.NewlineText(lyrics)
 
 while True:
-  tweet = model.make_short_sentence(140))
+  tweet = model.make_short_sentence(140)
   print(tweet)
   api.update_status(tweet)
   time.sleep(60 * 30)
