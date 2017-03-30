@@ -21,4 +21,4 @@ while True:
   tweet = model.make_short_sentence(140)
   print(tweet)
   api.update_status(tweet)
-  time.sleep(60 * 30)
+  time.sleep(60 * 15)
