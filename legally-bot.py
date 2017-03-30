@@ -27,7 +27,7 @@ model_four = markovify.NewlineText(lyrics, state_size = 4)
 models = [model_two, model_three, model_four]
 
 # wait until XX:00, XX:15, XX:30, or XX:45 to start main loop
-while datetime.datetime.now().time().minute % 2 == 0:
+while datetime.datetime.now().time().minute % 15 != 0:
   time.sleep(1)
 
 # main loop
