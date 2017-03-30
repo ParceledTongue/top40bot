@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import tweepy, time, sys, markovify
+import tweepy, time, sys, markovify, random
 
 #enter the corresponding information from your Twitter application:
 CONSUMER_KEY = '***REMOVED***'
@@ -15,10 +15,15 @@ api = tweepy.API(auth)
 with open("lyrics.txt") as f:
   lyrics = f.read()
 
-model = markovify.NewlineText(lyrics)
+model_two = markovify.NewlineText(lyrics, state_size=2)
+model_three = markovify.NewlineText(lyrics, state_size=3)
+model_four = markovify.NewlineText(lyrics, state_size = 4)
+models = [model_two, model_three, model_four]
 
 while True:
-  tweet = model.make_short_sentence(140)
+  tweet = None
+  while tweet == None:
+    tweet = random.choice(models).make_short_sentence(140)
   print(tweet)
-  api.update_status(tweet)
+  # api.update_status(tweet)
   time.sleep(60 * 15)
