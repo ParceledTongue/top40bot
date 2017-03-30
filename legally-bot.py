@@ -25,5 +25,5 @@ while True:
   while tweet == None:
     tweet = random.choice(models).make_short_sentence(140)
   print(tweet)
-  # api.update_status(tweet)
+  api.update_status(tweet)
   time.sleep(60 * 15)
