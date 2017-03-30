@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import tweepy, time, sys, markovify, random
-from sets import Set
+import tweepy, time, sys, markovify, random, datetime
 
 # login via tweepy 
 CONSUMER_KEY = '***REMOVED***'
@@ -26,6 +25,10 @@ model_two = markovify.NewlineText(lyrics, state_size=2)
 model_three = markovify.NewlineText(lyrics, state_size=3)
 model_four = markovify.NewlineText(lyrics, state_size = 4)
 models = [model_two, model_three, model_four]
+
+# wait until XX:00, XX:15, XX:30, or XX:45 to start main loop
+while datetime.datetime.now().time().minute % 2 == 0:
+  time.sleep(1)
 
 # main loop
 while True:
