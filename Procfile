@@ -1,1 +1,1 @@
-worker: python pompous-bot.py
+worker: python legally-bot.py
