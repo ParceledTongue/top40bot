@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import tweepy, time, sys
+import tweepy, time, sys, markovify
 
 #enter the corresponding information from your Twitter application:
 CONSUMER_KEY = '***REMOVED***'
@@ -12,16 +12,11 @@ auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
 
-to_capitalize = 0
-base_tweet = "some say that i'm a pompous creep"
-tweet = base_tweet
+with open("lyrics.txt") as f:
+  lyrics = f.read()
 
-while to_capitalize < len(tweet):
-  to_capitalize += 1
-  tweet = tweet = base_tweet
-  tweet = tweet[:to_capitalize].capitalize() + tweet[to_capitalize:]
-  while len(tweet) <= 140:
-    api.update_status(status=tweet)
-    tweet += "!"
-    time.sleep(600)
+model = markovify.NewlineText(lyrics)
 
+while True:
+  api.update_status(model.make_short_sentence(140))
+  time.sleep(60 * 30)
