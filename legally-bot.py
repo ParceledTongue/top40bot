@@ -21,8 +21,8 @@ for tweet in tweepy.Cursor(api.user_timeline).items():
 with open("lyrics.txt") as f:
   lyrics = f.read()
 
-model_two = markovify.NewlineText(lyrics, state_size=2)
-model_three = markovify.NewlineText(lyrics, state_size=3)
+model_two = markovify.NewlineText(lyrics, state_size = 2)
+model_three = markovify.NewlineText(lyrics, state_size = 3)
 model_four = markovify.NewlineText(lyrics, state_size = 4)
 models = [model_two, model_three, model_four]
 
@@ -32,13 +32,13 @@ while True:
   tweet = None
   while tweet == None or tweet in old_tweets:
     tweet = random.choice(models).make_short_sentence(140)
-  # wait until XX:00, XX:15, XX:30, or XX:45 to post
-  while datetime.datetime.now().time().minute % 15 != 0:
+  # wait until XX:00 to post
+  while datetime.datetime.now().time().minute != 0:
     time.sleep(1)
   # post the tweet
   api.update_status(tweet)
   print(tweet)
   old_tweets.add(tweet)
-  # sleep, but not quite for 15 minutes... we want to prevent timer drift
-  time.sleep(60 * 14.5)
+  # sleep, but not quite for an hour... we want to prevent timer drift
+  time.sleep(60 * 59.5)
 
