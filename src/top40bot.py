@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import tweepy, time, sys, markovify, random, datetime
+from musixmatch import Musixmatch
 
 # login via tweepy 
 CONSUMER_KEY = '***REMOVED***'
