@@ -1,4 +1,4 @@
-import markovify, os.path, pickle, random
+import markovify, os, pickle, random
 from musixmatch import Musixmatch
 from track import Track
 
@@ -7,7 +7,16 @@ CACHE_PATH = '../cache/cache.pkl'
 # set up Musixmatch API
 musixmatch = Musixmatch('***REMOVED***')
 
+def create_cache_dir_if_not_exists():
+  cache_dir = os.path.dirname(CACHE_PATH)
+  try:
+    os.makedirs(cache_dir)
+  except OSError:
+    if not os.path.isdir(cache_dir):
+      raise
+
 def read_cache():
+  create_cache_dir_if_not_exists()
   if os.path.isfile(CACHE_PATH):
     with open(CACHE_PATH, 'rb') as f:
       return pickle.load(f)
@@ -15,6 +24,7 @@ def read_cache():
     return {}
 
 def write_cache(cache):
+  create_cache_dir_if_not_exists()
   with open(CACHE_PATH, 'wb') as f:
     pickle.dump(cache, f, pickle.HIGHEST_PROTOCOL)
 
