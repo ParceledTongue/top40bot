@@ -2,7 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import tweepy, time, sys, markovify, random, datetime
+from history import History
 from musixmatch import Musixmatch
+
+HISTORY_SIZE = 1500
 
 # login via tweepy 
 CONSUMER_KEY = '***REMOVED***'
@@ -13,14 +16,13 @@ auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
 
-# build set of old tweets
-old_tweets = set()                                                          
-for tweet in tweepy.Cursor(api.user_timeline).items():
-  old_tweets.add(tweet.text)
-
-# generate models
-with open("lyrics.txt") as f:
-  lyrics = f.read()
+# build history of most recent HISTORY_SIZE tweets
+history = History(HISTORY_SIZE)
+old_tweets = []
+for tweet in tweepy.Cursor(api.user_timeline).items(HISTORY_SIZE):
+  old_tweets.append(tweet.text)
+for tweet in reversed(old_tweets):
+  history.add(tweet)
 
 model_two = markovify.NewlineText(lyrics, state_size = 2)
 model_three = markovify.NewlineText(lyrics, state_size = 3)
@@ -31,7 +33,7 @@ models = [model_two, model_three, model_four]
 while True:
   # prepare the tweet
   tweet = None
-  while tweet == None or tweet in old_tweets:
+  while tweet == None or tweet in history:
     tweet = random.choice(models).make_short_sentence(140)
   # wait until XX:00 to post
   while datetime.datetime.now().time().minute != 0:
@@ -39,7 +41,7 @@ while True:
   # post the tweet
   api.update_status(tweet)
   print(tweet)
-  old_tweets.add(tweet)
+  history.add(tweet)
   # sleep, but not quite for an hour... we want to prevent timer drift
   time.sleep(60 * 59.5)
 
