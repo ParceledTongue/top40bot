@@ -10,24 +10,13 @@ musixmatch = Musixmatch('***REMOVED***')
 def read_cache():
   if os.path.isfile(CACHE_PATH):
     with open(CACHE_PATH, 'rb') as f:
-      return pickle.load(f, pickle.HIGHEST_PROTOCOL)
+      return pickle.load(f)
   else:
     return {}
 
 def write_cache(cache):
   with open(CACHE_PATH, 'wb') as f:
     pickle.dump(cache, f, pickle.HIGHEST_PROTOCOL)
-
-def get_track_lyrics(tid):
-  lyrics = musixmatch.track_lyrics_get(tid)['message'] \
-      ['body']['lyrics']['lyrics_body']
-  lyrics = lyrics.split('...')[0] # remove text watermark
-  return lyrics
-
-def get_top_40():
-  info_list = musixmatch.chart_tracks_get(1, 40, True)['message']['body'] \
-      ['track_list']
-  return [Track(info) for info in info_list]
 
 def update_cache():
   cache = read_cache()
@@ -53,8 +42,22 @@ def update_cache():
 def clear_cache():
   write_cache({})
 
+def get_track_lyrics(tid):
+  lyrics = musixmatch.track_lyrics_get(tid)['message'] \
+      ['body']['lyrics']['lyrics_body']
+  lyrics = lyrics.split('...')[0] # remove text watermark
+  return lyrics
+
+def get_top_40():
+  info_list = musixmatch.chart_tracks_get(1, 40, True)['message']['body'] \
+      ['track_list']
+  return [Track(info) for info in info_list]
+
 def make_tweet():
   cache = read_cache()
+
+  if not cache:
+    cache = update_cache()
  
   all_lyrics = ''.join(cache.values())
   models = [
