@@ -1,9 +1,22 @@
-import markovify, pickle, random
+import markovify, os.path, pickle, random
 from musixmatch import Musixmatch
 from track import Track
 
+CACHE_PATH = '../cache/cache.pkl'
+
 # set up Musixmatch API
 musixmatch = Musixmatch('***REMOVED***')
+
+def read_cache():
+  if os.path.isfile(CACHE_PATH):
+    with open(CACHE_PATH, 'rb') as f:
+      return pickle.load(f, pickle.HIGHEST_PROTOCOL)
+  else:
+    return {}
+
+def write_cache(cache):
+  with open(CACHE_PATH, 'wb') as f:
+    pickle.dump(cache, f, pickle.HIGHEST_PROTOCOL)
 
 def get_track_lyrics(tid):
   lyrics = musixmatch.track_lyrics_get(tid)['message'] \
@@ -17,11 +30,7 @@ def get_top_40():
   return [Track(info) for info in info_list]
 
 def update_cache():
-
-  # load in the cache
-  with open('../cache/cache.pkl', 'rb') as f:
-    cache = pickle.load(f)
-  
+  cache = read_cache()
   top40 = get_top_40()
 
   # add missing track info
@@ -37,19 +46,15 @@ def update_cache():
     cache.pop(track)
 
   # update the cache file
-  with open('../cache/cache.pkl', 'wb') as f:
-    pickle.dump(cache, f, pickle.HIGHEST_PROTOCOL)
+  write_cache(cache)
 
   return cache
 
 def clear_cache():
-  empty_cache = {}
-  with open('../cache/cache.pkl', 'wb') as f:
-    pickle.dump(empty_cache, f, pickle.HIGHEST_PROTOCOL)
+  write_cache({})
 
 def make_tweet():
-  with open('../cache/cache.pkl', 'rb') as f:
-    cache = pickle.load(f)
+  cache = read_cache()
  
   all_lyrics = ''.join(cache.values())
   models = [
