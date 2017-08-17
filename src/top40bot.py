@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import tweepy, time, sys, markovify, random, datetime, keyconfig
+import tweepy, time, sys, markovify, random, datetime, keyconfig, util
 from history import History
 from musixmatch import Musixmatch
 
@@ -22,17 +22,12 @@ for tweet in tweepy.Cursor(api.user_timeline).items(HISTORY_SIZE):
 for tweet in reversed(old_tweets):
   history.add(tweet)
 
-model_two = markovify.NewlineText(lyrics, state_size = 2)
-model_three = markovify.NewlineText(lyrics, state_size = 3)
-model_four = markovify.NewlineText(lyrics, state_size = 4)
-models = [model_two, model_three, model_four]
-
 # main loop
 while True:
   # prepare the tweet
   tweet = None
   while tweet == None or tweet in history:
-    tweet = random.choice(models).make_short_sentence(140)
+    tweet = util.make_tweet()
   # wait until XX:00 to post
   while datetime.datetime.now().time().minute != 0:
     time.sleep(1)
