@@ -1,19 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import tweepy, time, sys, markovify, random, datetime
+import tweepy, time, sys, markovify, random, datetime, keyconfig
 from history import History
 from musixmatch import Musixmatch
 
 HISTORY_SIZE = 1500
 
 # login via tweepy 
-CONSUMER_KEY = '***REMOVED***'
-CONSUMER_SECRET = '***REMOVED***'
-ACCESS_KEY = '***REMOVED***'
-ACCESS_SECRET = '***REMOVED***'
-auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+auth = tweepy.OAuthHandler(keyconfig.tweepy['CONSUMER_KEY'], 
+    keyconfig.tweepy['CONSUMER_SECRET'])
+auth.set_access_token(keyconfig.tweepy['ACCESS_KEY'], 
+    keyconfig.tweepy['ACCESS_SECRET'])
 api = tweepy.API(auth)
 
 # build history of most recent HISTORY_SIZE tweets
