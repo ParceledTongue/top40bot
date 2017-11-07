@@ -1,1 +1,1 @@
-worker: python legally-bot.py
+worker: python src/top40bot.py

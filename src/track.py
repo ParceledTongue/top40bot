@@ -3,8 +3,8 @@ import util
 class Track(object):
   def __init__(self, info):
     self.tid = info['track']['track_id']
-    self.name = info['track']['track_name'].encode('utf-8')
-    self.artist = info['track']['artist_name'].encode('utf-8')
+    self.name = info['track']['track_name']
+    self.artist = info['track']['artist_name']
 
   def __eq__(self, other):
     return self.tid == other.tid

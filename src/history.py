@@ -33,8 +33,8 @@ class History(object):
   def delete(self, item):
     try:
       self.hist.pop(item)
-    except KeyError, e:
-      raise KeyError, item
+    except KeyError as e:
+      raise e(item)
 
   def clear(self):
     self.hist = OrderedDict()
