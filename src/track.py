@@ -22,5 +22,5 @@ class Track(object):
         return hash(self.tid)
 
     def get_lyrics(self):
-        return util.get_track_lyrics(self.tid)
+        return util.get_track_lyrics(self)
 

@@ -1,8 +1,9 @@
 import markovify, os, pickle, random
 from musixmatch import Musixmatch
+from PyLyrics import PyLyrics
 from track import Track
 
-CACHE_PATH = '/tmp/top40bot-cache.pkl' # for Heroku - may not work elsewhere
+CACHE_PATH = '../cache/cache.pkl'
 
 # set up Musixmatch API
 musixmatch = Musixmatch('***REMOVED***')
@@ -57,10 +58,17 @@ def update_cache():
 def clear_cache():
     write_cache({})
 
-def get_track_lyrics(tid):
-    lyrics = musixmatch.track_lyrics_get(tid) \
-            ['message']['body']['lyrics']['lyrics_body']
-    lyrics = lyrics.split('...')[0] # remove text watermark
+def get_track_lyrics(track):
+    lyrics = ''
+    try:
+        lyrics = PyLyrics.getLyrics(
+                track.artist.split(' feat.')[0], track.name)
+        print('* lyrics obtained via PyLyrics')
+    except:
+        lyrics = musixmatch.track_lyrics_get(track.tid) \
+                ['message']['body']['lyrics']['lyrics_body']
+        print('* lyrics obtained via musixmatch')
+        lyrics = lyrics.split('...')[0] # remove text watermark
     return lyrics
 
 def get_top_40():
