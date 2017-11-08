@@ -1,5 +1,4 @@
-tweepy==3.5.0
 markovify==0.6.4
+tweepy==3.5.0
 pymusixmatch==0.2
-musixmatch==0.9
 
