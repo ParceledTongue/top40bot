@@ -33,8 +33,15 @@ next_post_time = dt.datetime.combine(
 while next_post_time <= dt.datetime.now():
     next_post_time += TWEET_PERIOD
 
+# we'll always start the main loop by updating the cache
+last_cache_update_date = dt.date.min
+
 # main loop
 while True:
+    # update the cache if we haven't today
+    if dt.date.today() > last_cache_update_date:
+       util.update_cache()
+       last_cache_update_date = dt.date.today()
     # prepare the tweet
     print('Composing tweet')
     tweet = None

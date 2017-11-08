@@ -30,23 +30,28 @@ def write_cache(cache):
 
 def update_cache():
     cache = read_cache()
-    top40 = get_top_40()
+    cache_tracks = set(cache.keys())
+    top40_tracks = set(get_top_40())
+
+    print('Updating cache...')
+    
+    if cache_tracks == top40_tracks:
+        print('  Already up to date.')
+        return cache
 
     # add missing track info
-    for track in top40:
-        if not track in cache.keys():
-            print('Adding ' + str(track) + ' to cache')
-            cache[track] = track.get_lyrics()
+    new_tracks = top40_tracks - cache_tracks
+    for track in new_tracks:
+        print('  Adding ' + str(track) + ' to cache')
+        cache[track] = track.get_lyrics()
   
     # delete info for tracks no longer in the top 40
-    bumped_tracks = set(cache.keys()) - set(top40)
+    bumped_tracks = cache_tracks - top40_tracks
     for track in bumped_tracks:
-        print('Deleting ' + str(track) + ' from cache')
+        print('  Deleting ' + str(track) + ' from cache')
         cache.pop(track)
 
-    # update the cache file
     write_cache(cache)
-
     return cache
 
 def clear_cache():
