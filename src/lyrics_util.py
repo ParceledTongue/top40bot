@@ -28,7 +28,7 @@ def lyrics_for_track(track):
 def make_lyric():
     all_lyrics = ''
     for track in top_40_tracks():
-        all_lyrics += lyrics_for_track(track)
+        all_lyrics += lyrics_for_track(track) + '\n'
     models = [
         markovify.NewlineText(all_lyrics, state_size = 2),
         markovify.NewlineText(all_lyrics, state_size = 3),
