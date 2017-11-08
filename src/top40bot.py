@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os, tweepy
-from lyrics_util import make_tweet()
+from lyrics_util import make_lyric
 
 HISTORY_SIZE = 1000
 
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     print('Composing tweet')
     tweet = None
     while not tweet or tweet in history:
-        tweet = util.make_lyric()
+        tweet = make_lyric()
     print('Tweeting: ' + tweet)
     tweepy_api.update_status(tweet)
 

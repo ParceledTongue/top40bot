@@ -12,15 +12,16 @@ def top_40_tracks():
     return [Track(info) for info in info_list]
 
 def lyrics_for_track(track):
+    print('  Getting lyrics for ' + str(track))
     lyrics = ''
     try:
         lyrics = PyLyrics.getLyrics(
                 track.artist.split(' feat.')[0], track.name)
-        print('* lyrics obtained via PyLyrics')
+        print('  * lyrics obtained via PyLyrics')
     except:
         lyrics = musixmatch.track_lyrics_get(track.tid) \
                 ['message']['body']['lyrics']['lyrics_body']
-        print('* lyrics obtained via musixmatch')
+        print('  * lyrics obtained via musixmatch')
         lyrics = lyrics.split('...')[0] # remove text watermark
     return lyrics
 
