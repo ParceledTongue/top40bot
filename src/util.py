@@ -2,7 +2,7 @@ import markovify, os, pickle, random
 from musixmatch import Musixmatch
 from track import Track
 
-CACHE_PATH = '../cache/cache.pkl'
+CACHE_PATH = '/tmp/top40bot-cache.pkl' # for Heroku - may not work elsewhere
 
 # set up Musixmatch API
 musixmatch = Musixmatch('***REMOVED***')

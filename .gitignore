@@ -4,6 +4,5 @@ venv
 staticfiles
 .env
 db.sqlite3
-cache/*
 *config.py
 .git.bfg-report/
