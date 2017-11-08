@@ -25,14 +25,23 @@ def lyrics_for_track(track):
         lyrics = lyrics.split('...')[0] # remove text watermark
     return lyrics
 
+def no_duplicate_lines(old_lyrics):
+    new_lyrics = ''
+    seen = set()
+    for line in old_lyrics.splitlines():
+        if line not in seen:
+            seen.add(line)
+            new_lyrics += line + "\n"
+    return new_lyrics
+
 def make_lyric():
     all_lyrics = ''
     for track in top_40_tracks():
         all_lyrics += lyrics_for_track(track) + '\n'
+    all_lyrics = no_duplicate_lines(all_lyrics)
     models = [
         markovify.NewlineText(all_lyrics, state_size = 2),
-        markovify.NewlineText(all_lyrics, state_size = 3),
-        markovify.NewlineText(all_lyrics, state_size = 4)]
+        markovify.NewlineText(all_lyrics, state_size = 3)]
 
     tweet = None
     while tweet is None:
