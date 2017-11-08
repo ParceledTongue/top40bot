@@ -4,7 +4,7 @@ from PyLyrics import PyLyrics
 from track import Track
 
 # set up Musixmatch API
-musixmatch = Musixmatch('***REMOVED***')
+musixmatch = Musixmatch(os.environ['MUSIXMATCH_SECRET'])
 
 def top_40_tracks():
     info_list = musixmatch.chart_tracks_get(1, 40, True) \
