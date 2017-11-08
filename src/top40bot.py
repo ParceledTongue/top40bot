@@ -6,7 +6,7 @@ from history import History
 from musixmatch import Musixmatch
 
 HISTORY_SIZE = 1500
-TWEET_PERIOD = dt.timedelta(minutes = 5)
+TWEET_PERIOD = dt.timedelta(minutes = 30)
 
 # login via tweepy
 print('Logging in via tweepy')
