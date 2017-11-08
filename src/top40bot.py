@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os, tweepy, util
+import os, tweepy
+from lyrics_util import make_tweet()
 
 HISTORY_SIZE = 1000
 
