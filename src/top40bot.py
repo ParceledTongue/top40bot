@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import datetime as dt, time, tweepy, util
+import datetime as dt, os, time, tweepy, util
 from history import History
 from musixmatch import Musixmatch
 
