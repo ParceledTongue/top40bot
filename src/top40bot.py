@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import datetime as dt, keyconfig, time, tweepy, util
+import datetime as dt, time, tweepy, util
 from history import History
 from musixmatch import Musixmatch
 
@@ -11,11 +11,11 @@ TWEET_PERIOD = dt.timedelta(minutes = 30)
 # login via tweepy
 print('Logging in via tweepy')
 auth = tweepy.OAuthHandler(
-        keyconfig.tweepy['CONSUMER_KEY'], 
-        keyconfig.tweepy['CONSUMER_SECRET'])
+        os.environ['TWEEPY_CONSUMER_KEY'], 
+        os.environ['TWEEPY_CONSUMER_SECRET'])
 auth.set_access_token(
-        keyconfig.tweepy['ACCESS_KEY'], 
-        keyconfig.tweepy['ACCESS_SECRET'])
+        os.environ['TWEEPY_ACCESS_KEY'], 
+        os.environ['TWEEPY_ACCESS_SECRET'])
 api = tweepy.API(auth)
 
 # build history of most recent HISTORY_SIZE tweets
