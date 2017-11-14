@@ -1,29 +1,13 @@
-import markovify, os, random
-from musixmatch import Musixmatch
-from PyLyrics import PyLyrics
+import feedparser, markovify, os, random
 from track import Track
 
-# set up Musixmatch API
-musixmatch = Musixmatch(os.environ['MUSIXMATCH_SECRET'])
-
-def top_40_tracks():
-    info_list = musixmatch.chart_tracks_get(1, 40, True) \
-            ['message']['body']['track_list']
-    return [Track(info) for info in info_list]
-
-def lyrics_for_track(track):
-    print('  Getting lyrics for ' + str(track))
-    lyrics = ''
-    try:
-        lyrics = PyLyrics.getLyrics(
-                track.artist.split(' feat.')[0], track.name)
-        print('  * lyrics obtained via PyLyrics')
-    except:
-        lyrics = musixmatch.track_lyrics_get(track.tid) \
-                ['message']['body']['lyrics']['lyrics_body']
-        print('  * lyrics obtained via musixmatch')
-        lyrics = lyrics.split('...')[0] # remove text watermark
-    return lyrics
+def get_top_tracks(n=40):
+    if (n < 1 or n > 100):
+        raise ValueError('n must be a number from 1 to 100')
+    feed = feedparser.parse('http://www.billboard.com/rss/charts/hot-100')
+    track_info_list = feed["items"][0:n]
+    return [Track(info['chart_item_title'], info['artist'])
+            for info in track_info_list]
 
 def no_duplicate_lines(old_lyrics):
     new_lyrics = ''
@@ -36,8 +20,10 @@ def no_duplicate_lines(old_lyrics):
 
 def make_lyric():
     all_lyrics = ''
-    for track in top_40_tracks():
-        all_lyrics += lyrics_for_track(track) + '\n'
+    for track in get_top_tracks(40):
+        track_lyrics = track.get_lyrics()
+        if track_lyrics:
+            all_lyrics += track_lyrics + '\n'
     all_lyrics = no_duplicate_lines(all_lyrics)
     models = [
         markovify.NewlineText(all_lyrics, state_size = 2),

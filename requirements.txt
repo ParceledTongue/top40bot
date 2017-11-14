@@ -1,5 +1,5 @@
+feedparser==5.2.1
 markovify==0.6.4
 PyLyrics==1.1.0
-pymusixmatch==0.2
 tweepy==3.5.0
 
