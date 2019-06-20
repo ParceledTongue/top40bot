@@ -1,6 +1,6 @@
 import billboard, lyricsgenius, markovify, os, random
 
-genius = lyricsgenius.Genius("UZstG7C_RWAhBXOSA89qQiv5BJRnueL4hZ692iFdNiwH-B9z_1znBIMUuZgUmUSM")
+genius = lyricsgenius.Genius(os.environ['GENIUS_ACCESS_TOKEN'])
 
 def genius_track(billboard_track):
     return genius.search_song(billboard_track.title, billboard_track.artist)
