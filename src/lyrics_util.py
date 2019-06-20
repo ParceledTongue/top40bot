@@ -1,5 +1,4 @@
 import billboard, lyricsgenius, markovify, os, random
-from track import Track
 
 genius = lyricsgenius.Genius("***REMOVED***")
 
