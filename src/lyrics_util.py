@@ -1,13 +1,17 @@
-import feedparser, markovify, os, random
+import billboard, lyricsgenius, markovify, os, random
 from track import Track
+
+genius = lyricsgenius.Genius("***REMOVED***")
+
+def genius_track(billboard_track):
+    return genius.search_song(billboard_track.title, billboard_track.artist)
 
 def get_top_tracks(n=40):
     if (n < 1 or n > 100):
         raise ValueError('n must be a number from 1 to 100')
-    feed = feedparser.parse('http://www.billboard.com/rss/charts/hot-100')
-    track_info_list = feed["items"][0:n]
-    return [Track(info['chart_item_title'], info['artist'])
-            for info in track_info_list]
+    billboard_tracks = billboard.ChartData('hot-100')[0:n]
+    genius_tracks = [genius_track(bt) for bt in billboard_tracks]
+    return [gt for gt in genius_tracks if gt is not None]
 
 def no_duplicate_lines(old_lyrics):
     new_lyrics = ''
@@ -20,10 +24,8 @@ def no_duplicate_lines(old_lyrics):
 
 def make_lyric():
     all_lyrics = ''
-    for track in get_top_tracks(40):
-        track_lyrics = track.get_lyrics()
-        if track_lyrics:
-            all_lyrics += track_lyrics + '\n'
+    for track in get_top_tracks():
+        all_lyrics += track.lyrics + '\n'
     all_lyrics = no_duplicate_lines(all_lyrics)
     models = [
         markovify.NewlineText(all_lyrics, state_size = 2),
@@ -31,7 +33,7 @@ def make_lyric():
 
     tweet = None
     while tweet is None:
-        tweet = random.choice(models).make_short_sentence(140)
+        tweet = random.choice(models).make_short_sentence(280)
   
     return tweet
 
