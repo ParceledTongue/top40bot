@@ -1,5 +1,4 @@
 import billboard, lyricsgenius, markovify, os, random
-from track import Track
 
 genius = lyricsgenius.Genius("UZstG7C_RWAhBXOSA89qQiv5BJRnueL4hZ692iFdNiwH-B9z_1znBIMUuZgUmUSM")
 
