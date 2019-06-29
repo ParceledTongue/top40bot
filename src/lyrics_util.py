@@ -21,7 +21,7 @@ def no_duplicate_lines(old_lyrics):
             new_lyrics += line + "\n"
     return new_lyrics
 
-def make_lyric():
+def make_lyric(history=set()):
     all_lyrics = ''
     for track in get_top_tracks():
         all_lyrics += track.lyrics + '\n'
@@ -31,7 +31,7 @@ def make_lyric():
         markovify.NewlineText(all_lyrics, state_size = 3)]
 
     tweet = None
-    while tweet is None:
+    while not tweet or tweet in history:
         tweet = random.choice(models).make_short_sentence(280)
   
     return tweet
