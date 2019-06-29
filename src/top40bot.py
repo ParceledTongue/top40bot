@@ -27,9 +27,7 @@ if __name__ == "__main__":
     tweepy_api = tweepy_api()
     history = recent_tweets(HISTORY_SIZE, tweepy_api)
     print('Composing tweet')
-    tweet = None
-    while not tweet or tweet in history:
-        tweet = make_lyric()
+    tweet = make_lyric(history)
     print('Tweeting: ' + tweet)
     tweepy_api.update_status(tweet)
 
