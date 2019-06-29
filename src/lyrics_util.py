@@ -3,7 +3,7 @@ import billboard, lyricsgenius, markovify, os, random
 genius = lyricsgenius.Genius(os.environ['GENIUS_ACCESS_TOKEN'])
 
 def genius_track(billboard_track):
-    return genius.search_song(billboard_track.title, billboard_track.artist)
+    return genius.search_song(billboard_track.title, billboard_track.artist, get_full_info=False)
 
 def get_top_tracks(n=40):
     if (n < 1 or n > 100):
